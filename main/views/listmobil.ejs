@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+
+    <title>CarBarZ</title>
+
+    <link
+      href="vendor/fontawesome-free/css/all.min.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+      rel="stylesheet"
+    />
+
+    <link href="css/sb-admin-2.min.css" rel="stylesheet" />
+  </head>
+
+  <body id="page-top">
+    <div id="wrapper">
+      <ul
+        class="navbar-nav bg-gradient-dark sidebar sidebar-dark accordion"
+        id="accordionSidebar"
+      >
+        <a
+          class="sidebar-brand d-flex align-items-center justify-content-center"
+          href="#"
+        >
+          <div class="sidebar-brand-text mx-3">CarBarZ</div>
+        </a>
+
+        <hr class="sidebar-divider my-0" />
+
+        <li class="nav-item active">
+          <a class="nav-link" href="/admin">
+            <i class="fas fa-fw fa-tachometer-alt"></i>
+            <span>Dashboard Admin</span></a
+          >
+        </li>
+
+        <hr class="sidebar-divider" />
+
+        <li class="nav-item">
+          <a class="nav-link" href="<%= url %>listmobil">
+            <i class="fas fa-fw fa-table"></i>
+            <span>Daftar Mobil</span></a
+          >
+        </li>
+        <!-- <li class="nav-item">
+          <a class="nav-link" href="<%= url %>input">
+            <i class="fas fa-fw fa-table"></i>
+            <span>Input Mobil</span></a
+          >
+        </li> -->
+        <hr class="sidebar-divider d-none d-md-block" />
+
+        <div class="text-center d-none d-md-inline">
+          <button class="rounded-circle border-0" id="sidebarToggle"></button>
+        </div>
+      </ul>
+
+      <div id="content-wrapper" class="d-flex flex-column">
+        <div id="content">
+          <nav
+            class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow"
+          >
+            <button
+              id="sidebarToggleTop"
+              class="btn btn-link d-md-none rounded-circle mr-3"
+            >
+              <i class="fa fa-bars"></i>
+            </button>
+
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item dropdown no-arrow">
+                <a
+                  class="nav-link dropdown-toggle"
+                  href="#"
+                  id="userDropdown"
+                  role="button"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                >
+                  <span class="mr-2 d-none d-lg-inline text-gray-600 medium"
+                    >Admin</span
+                  >
+                  <img
+                    class="img-profile rounded-circle"
+                    src="img/admin-profile.jpg"
+                  />
+                </a>
+                <div
+                  class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                  aria-labelledby="userDropdown"
+                >
+                  <div class="dropdown-divider"></div>
+                  <a
+                    class="dropdown-item"
+                    href="#"
+                    data-toggle="modal"
+                    data-target="#logoutModal"
+                  >
+                    <i
+                      class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"
+                    ></i>
+                    Logout
+                  </a>
+                </div>
+              </li>
+            </ul>
+          </nav>
+
+          <div class="container-fluid">
+            <div class="container">
+              <h2><%= title %></h2>
+              <button
+                class="btn btn-success"
+                data-toggle="modal"
+                data-target="#myModalAdd"
+              >
+                Add New
+              </button>
+              <table class="table table-striped" id="mytable">
+                <thead>
+                  <tr>
+                    <th>ID Produk</th>
+                    <th>Tipe Mobil</th>
+                    <th>Harga</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% for (let product of dataMobil){ %>
+                  <tr>
+                    <td><%= product.id %></td>
+                    <td><%= product.tipe_mobil %></td>
+                    <td><%= product.harga %></td>
+                    <td>
+                      <a
+                        href="javascript:void(0);"
+                        class="btn btn-sm btn-info edit"
+                        data-id="<%= product.id %>"
+                        data-tipe="<%= product.tipe_mobil %>"
+                        data-harga="<%= product.harga %>"
+                        >Edit</a
+                      >
+                      <a
+                        href="javascript:void(0);"
+                        class="btn btn-sm btn-danger delete"
+                        data-id="<%= product.id %>"
+                        >Delete</a
+                      >
+                    </td>
+                  </tr>
+                  <% } %>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Modal Add Produk-->
+            <form action="/listmobil/save" method="post">
+              <div
+                class="modal fade"
+                id="myModalAdd"
+                tabindex="-1"
+                role="dialog"
+                aria-labelledby="exampleModalLabel"
+                aria-hidden="true"
+              >
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel">
+                        Add New Product
+                      </h5>
+                      <button
+                        type="button"
+                        class="close"
+                        data-dismiss="modal"
+                        aria-label="Close"
+                      >
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <div class="form-group">
+                        <input
+                          type="text"
+                          name="tipe_mobil"
+                          class="form-control"
+                          placeholder="Tipe Mobil"
+                          required
+                        />
+                      </div>
+
+                      <div class="form-group">
+                        <input
+                          type="text"
+                          name="harga"
+                          class="form-control"
+                          placeholder="Harga"
+                          required
+                        />
+                      </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button
+                        type="button"
+                        class="btn btn-secondary"
+                        data-dismiss="modal"
+                      >
+                        Close
+                      </button>
+                      <button type="submit" class="btn btn-primary">
+                        Save
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+
+            <!-- Modal Update Produk-->
+            <form action="/listmobil/edit" method="post">
+              <div
+                class="modal fade"
+                id="EditModal"
+                tabindex="-1"
+                role="dialog"
+                aria-labelledby="exampleModalLabel"
+                aria-hidden="true"
+              >
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel">
+                        Edit Product
+                      </h5>
+                      <button
+                        type="button"
+                        class="close"
+                        data-dismiss="modal"
+                        aria-label="Close"
+                      >
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <div class="form-group">
+                        <input
+                          type="text"
+                          name="tipe_mobil"
+                          class="form-control tipe"
+                          placeholder="Tipe Mobil"
+                          required
+                        />
+                      </div>
+
+                      <div class="form-group">
+                        <input
+                          type="text"
+                          name="harga"
+                          class="form-control price"
+                          placeholder="Harga"
+                          required
+                        />
+                      </div>
+                    </div>
+                    <div class="modal-footer">
+                      <input type="hidden" name="id" class="id" />
+                      <button
+                        type="button"
+                        class="btn btn-secondary"
+                        data-dismiss="modal"
+                      >
+                        Close
+                      </button>
+                      <button type="submit" class="btn btn-primary">
+                        Update
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+
+            <!-- Modal Delete Produk-->
+            <form id="add-row-form" action="/listmobil/delete" method="post">
+              <div
+                class="modal fade"
+                id="DeleteModal"
+                tabindex="-1"
+                role="dialog"
+                aria-labelledby="myModalLabel"
+                aria-hidden="true"
+              >
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="myModalLabel">
+                        Delete Product
+                      </h5>
+                      <button
+                        type="button"
+                        class="close"
+                        data-dismiss="modal"
+                        aria-label="Close"
+                      >
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <strong>Anda yakin mau menghapus data ini?</strong>
+                    </div>
+                    <div class="modal-footer">
+                      <input
+                        type="hidden"
+                        name="id"
+                        class="form-control id2"
+                        required
+                      />
+                      <button
+                        type="button"
+                        class="btn btn-default"
+                        data-dismiss="modal"
+                      >
+                        Close
+                      </button>
+                      <button type="submit" class="btn btn-success">
+                        Delete
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+            <!-- <div class="container">
+              <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                  <h6 class="m-0 font-weight-bold text-primary">Data Mobil</h6>
+                </div>
+                <div class="card-body">
+                  <div class="table-responsive">
+                    <table
+                      class="table table-bordered"
+                      id="dataTable"
+                      width="100%"
+                      cellspacing="0"
+                    >
+                      <thead>
+                        <tr>
+                          <th>Nama Mobil</th>
+                          <th>Tipe Mobil</th>
+                          <th>Warna</th>
+                          <th>Harga</th>
+                          <th></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>Jeep</td>
+                          <td>Wrangler Unlimited</td>
+                          <td>Putih</td>
+                          <td>Rp 730.000.000</td>
+                          <td>
+                            <a
+                              href="<?=site_url('user/add')?>"
+                              class="btn btn-primary btn-flat"
+                            >
+                              <i class="fa fa-trash"></i>Hapus
+                            </a>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>Nissan</td>
+                          <td>Juke Gen 1</td>
+                          <td>Biru</td>
+                          <td>Rp 90.000.000</td>
+                          <td>
+                            <a
+                              href="<?=site_url('user/add')?>"
+                              class="btn btn-primary btn-flat"
+                            >
+                              <i class="fa fa-trash"></i>Hapus
+                            </a>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>Honda</td>
+                          <td>HR-V Vezel</td>
+                          <td>Merah</td>
+                          <td>Rp 253.000.000</td>
+                          <td>
+                            <a
+                              href="<?=site_url('user/add')?>"
+                              class="btn btn-primary btn-flat"
+                            >
+                              <i class="fa fa-trash"></i>Hapus
+                            </a>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>Toyota</td>
+                          <td>Yaris 1.5 TRD Sportivo Heykers CVT</td>
+                          <td>Kuning</td>
+                          <td>Rp 228.000.000</td>
+                          <td>
+                            <a
+                              href="<?=site_url('user/add')?>"
+                              class="btn btn-primary btn-flat"
+                            >
+                              <i class="fa fa-trash"></i>Hapus
+                            </a>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div> -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="modal fade"
+      id="logoutModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+            <button
+              class="close"
+              type="button"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            Select "Logout" below if you are ready to end your current session.
+          </div>
+          <div class="modal-footer">
+            <button
+              class="btn btn-secondary"
+              type="button"
+              data-dismiss="modal"
+            >
+              Cancel
+            </button>
+            <a class="btn btn-primary" href="<%= url %>login/logout">Logout</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <script src="js/sb-admin-2.min.js"></script>
+
+    <script src="vendor/chart.js/Chart.min.js"></script>
+
+    <script src="js/demo/chart-area-demo.js"></script>
+    <script src="js/demo/chart-pie-demo.js"></script>
+
+    <script>
+      $(document).ready(function () {
+        //tampilkan data ke modal untuk edit
+        $("#mytable").on("click", ".edit", function () {
+          var id = $(this).data("id");
+          var tipe = $(this).data("tipe");
+          var harga = $(this).data("harga");
+          $("#EditModal").modal("show");
+          $(".tipe").val(tipe);
+          $(".price").val(harga);
+          $(".id").val(id);
+        });
+        //tampilkan modal hapus record
+        $("#mytable").on("click", ".delete", function () {
+          var id = $(this).data("id");
+          $("#DeleteModal").modal("show");
+          $(".id2").val(id);
+        });
+      });
+    </script>
+  </body>
+</html>
